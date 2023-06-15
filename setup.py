@@ -7,7 +7,8 @@ setup(
     install_requires=[
         "paho-mqtt",
         "sense-hat",
-        "toml"
+        "toml",
+        "tomli"
     ],
     entry_points={
         "console_scripts": [
