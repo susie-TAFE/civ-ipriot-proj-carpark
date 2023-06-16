@@ -1,0 +1,6 @@
+name = 'sensor'
+location = 'moondalup'
+topic-root = "lot"
+topic-qualifier = "na"
+broker = 'localhost'
+port = 1883
