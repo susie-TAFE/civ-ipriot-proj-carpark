@@ -9,5 +9,6 @@ def on_message(client, userdata, msg):
 client = paho.Client()
 client.on_message = on_message
 client.connect(BROKER, PORT)
-client.subscribe("lot/sensor")
+client.subscribe("display")
+client.subscribe("sensor")
 client.loop_forever()
