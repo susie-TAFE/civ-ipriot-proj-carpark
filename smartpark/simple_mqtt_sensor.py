@@ -35,9 +35,7 @@ if __name__ == '__main__':
 
     sensor1 = Sensor(config1)
 
-
     print("Sensor initialized")
     sensor1.start_sensing()
 
     sensor1.start_sensing()
-

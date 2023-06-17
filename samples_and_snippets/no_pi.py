@@ -16,21 +16,23 @@ from typing import Iterable
 
 
 class WindowedDisplay:
-    """Displays values for a given set of fields as a simple GUI window. Use .show() to display the window; use .update() to update the values displayed.
-    """
+    """Displays values for a given set of fields as a simple GUI window. Use .show() to display the window;
+    use .update() to update the values displayed."""
 
     DISPLAY_INIT = '– – –'
     SEP = ':'  # field name separator
 
     def __init__(self, title: str, display_fields: Iterable[str]):
-        """Creates a Windowed (tkinter) display to replace sense_hat display. To show the display (blocking) call .show() on the returned object.
+        """Creates a Windowed (tkinter) display to replace sense_hat display.
+         To show the display (blocking) call .show() on the returned object.
 
         Parameters
         ----------
         title : str
             The title of the window (usually the name of your carpark from the config)
         display_fields : Iterable
-            An iterable (usually a list) of field names for the UI. Updates to values must be presented in a dictionary with these values as keys.
+            An iterable (usually a list) of field names for the UI.
+            Updates to values must be presented in a dictionary with these values as keys.
         """
         self.window = tk.Tk()
         self.window.title(f'{title}: Parking')
@@ -58,7 +60,8 @@ class WindowedDisplay:
         self.window.mainloop()
 
     def update(self, updated_values: dict):
-        """Update the values displayed in the GUI. Expects a dictionary with keys matching the field names passed to the constructor."""
+        """Update the values displayed in the GUI.
+        Expects a dictionary with keys matching the field names passed to the constructor."""
         for field in self.gui_elements:
             if field.startswith('lbl_field'):
                 field_value = field.replace('field', 'value')
@@ -72,7 +75,8 @@ class WindowedDisplay:
 
 
 class CarParkDisplay:
-    """Provides a simple display of the car park status. This is a skeleton only. The class is designed to be customizable without requiring and understanding of tkinter or threading."""
+    """Provides a simple display of the car park status. This is a skeleton only.
+    The class is designed to be customizable without requiring and understanding of tkinter or threading."""
     # determines what fields appear in the UI
     fields = ['Available bays', 'Temperature', 'At']
 
@@ -99,7 +103,8 @@ class CarParkDisplay:
 
 
 class CarDetector:
-    """Provides a couple of simple buttons that can be used to represent a sensor detecting a car. This is a skeleton only."""
+    """Provides a couple of simple buttons that can be used to represent a sensor detecting a car.
+     This is a skeleton only."""
 
     def __init__(self):
         self.root = tk.Tk()
@@ -109,7 +114,8 @@ class CarDetector:
             self.root, text='🚘 Incoming Car', font=('Arial', 50), cursor='right_side', command=self.incoming_car)
         self.btn_incoming_car.pack(padx=10, pady=5)
         self.btn_outgoing_car = tk.Button(
-            self.root, text='Outgoing Car 🚘',  font=('Arial', 50), cursor='bottom_left_corner', command=self.outgoing_car)
+            self.root, text='Outgoing Car 🚘',  font=('Arial', 50),
+            cursor='bottom_left_corner', command=self.outgoing_car)
         self.btn_outgoing_car.pack(padx=10, pady=5)
 
         self.root.mainloop()
@@ -124,8 +130,10 @@ class CarDetector:
 
 
 if __name__ == '__main__':
-    # TODO: Run each of these classes in a separate terminal. You should see the CarParkDisplay update when you click the buttons in the CarDetector.
-    # These classes are not designed to be used in the same module - they are both blocking. If you uncomment one, comment-out the other.
+    # Run each of these classes in a separate terminal.
+    # You should see the CarParkDisplay update when you click the buttons in the CarDetector.
+    # These classes are not designed to be used in the same module - they are both blocking.
+    # If you uncomment one, comment-out the other.
 
     CarParkDisplay()
     # CarDetector()

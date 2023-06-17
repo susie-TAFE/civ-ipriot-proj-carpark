@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from config_parser import parse_config
 
+
 class Display(mqtt_device.MqttDevice):
     """Displays the number of cars and the temperature"""
     def __init__(self, config):
@@ -28,7 +29,6 @@ class Display(mqtt_device.MqttDevice):
             values[key] = value
         return values
 
-
     def on_message(self, client, userdata, msg):
         data = msg.payload.decode()
         values = self.parse_values(data)
@@ -46,4 +46,3 @@ if __name__ == '__main__':
     config_file = 'display_config.toml'
     config = parse_config(config_file)
     display = Display(config)
-
