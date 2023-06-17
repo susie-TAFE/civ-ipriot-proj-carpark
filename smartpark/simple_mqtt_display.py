@@ -45,4 +45,5 @@ class Display(mqtt_device.MqttDevice):
 if __name__ == '__main__':
     config_file = 'config.toml'
     config = parse_config(config_file)
+    print("Display initialized")
     display = Display(config)

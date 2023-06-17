@@ -34,8 +34,8 @@ if __name__ == '__main__':
     config1 = parse_config(config_file)
 
     sensor1 = Sensor(config1)
-
     print("Sensor initialized")
+
     sensor1.start_sensing()
 
     sensor1.start_sensing()

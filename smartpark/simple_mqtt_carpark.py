@@ -67,6 +67,7 @@ class CarPark(mqtt_device.MqttDevice):
 if __name__ == '__main__':
     config_file = 'config.toml'
     config = parse_config(config_file)
+    print("Carpark initialized")
     car_park = CarPark(config)
-    print("Carpark initialized")
-    print("Carpark initialized")
+
+
