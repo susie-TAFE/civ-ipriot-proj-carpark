@@ -20,7 +20,15 @@ class CarPark(mqtt_device.MqttDevice):
 
     @property
     def available_spaces(self):
-        available = self.total_spaces - self.total_cars
+        if self.total_cars > self.total_spaces:
+            # Carpark is full, no negative spaces
+            available = 0
+        elif self.total_cars <= 0:
+            # Carpark is empty, no negative cars
+            available = self.total_spaces
+            self.total_cars = 0
+        else:
+            available = self.total_spaces - self.total_cars
         return max(available, 0)
 
     @property
@@ -36,6 +44,7 @@ class CarPark(mqtt_device.MqttDevice):
         print(
             (
                 f"TIME: {readable_time}, "
+                + f"CARS: {self.total_cars}, "
                 + f"SPACES: {self.available_spaces}, "
                 + f"TEMPC: {self.temperature}"
             )
@@ -52,7 +61,12 @@ class CarPark(mqtt_device.MqttDevice):
         self._publish_event()
 
     def on_car_exit(self):
-        self.total_cars -= 1
+        if self.total_cars == 0:
+            self.total_cars = 0
+            print("Exit detected while car park empty.")
+            print("Check sensor for malfunction")
+        else:
+            self.total_cars -= 1
         self._publish_event()
 
     def on_message(self, client, userdata, msg: MQTTMessage):

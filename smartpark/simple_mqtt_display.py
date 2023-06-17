@@ -35,8 +35,9 @@ class Display(mqtt_device.MqttDevice):
         time = datetime.strptime((values['TIME']), '%H:%M').time()
         temperature = int(values['TEMPC'])
         free_spaces = int(values['SPACES'])
+        available = "FULL" if free_spaces == 0 else free_spaces
         display_values = \
-            f"SPACES: {free_spaces}", \
+            f"SPACES: {available}", \
             f"TEMPC:  {temperature}", \
             f"TIME:   {time.strftime('%H:%M')}"
         self.display(*display_values)
