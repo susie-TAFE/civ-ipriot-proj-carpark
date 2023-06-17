@@ -1,5 +1,6 @@
 import mqtt_device
 import time
+from datetime import datetime
 from config_parser import parse_config
 
 class Display(mqtt_device.MqttDevice):
@@ -17,11 +18,30 @@ class Display(mqtt_device.MqttDevice):
             time.sleep(1)
 
         print('*' * 20)
+
+    def parse_values(self, message) -> dict:
+        value_strings = message.split(', ')  # split message to a list
+        values = {}
+        for i in value_strings:
+            key = (i.split(': ')[0])
+            value = i.split(': ')[1]
+            values[key] = value
+        return values
+
+
     def on_message(self, client, userdata, msg):
-       data = msg.payload.decode()
-       self.display(*data.split(','))
-       # TODO: Parse the message and extract free spaces,\
-       #  temperature, time
+        data = msg.payload.decode()
+        values = self.parse_values(data)
+        time = datetime.strptime((values['TIME']), '%H:%M').time()
+        temperature = int(values['TEMPC'])
+        free_spaces = int(values['SPACES'])
+        display_values = \
+            f"SPACES: {free_spaces}", \
+            f"TEMPC:  {temperature}", \
+            f"TIME:   {time.strftime('%H:%M')}"
+        self.display(*display_values)
+
+
 if __name__ == '__main__':
     config_file = 'display_config.toml'
     config = parse_config(config_file)
