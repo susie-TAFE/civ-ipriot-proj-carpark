@@ -11,8 +11,8 @@ class CarPark(mqtt_device.MqttDevice):
 
     def __init__(self, config):
         super().__init__(config)
-        self.total_spaces = config['total-spaces']
-        self.total_cars = config['total-cars']
+        self.total_spaces = config['parking_lot']['total_spaces']
+        self.total_cars = 0  # config['total-cars']
         self.client.on_message = self.on_message
         self.client.subscribe('sensor')
         self.client.loop_forever()
@@ -65,7 +65,7 @@ class CarPark(mqtt_device.MqttDevice):
 
 
 if __name__ == '__main__':
-    config_file = 'car-park_config.toml'
+    config_file = 'config.toml'
     config = parse_config(config_file)
     car_park = CarPark(config)
     print("Carpark initialized")

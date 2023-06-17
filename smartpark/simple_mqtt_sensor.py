@@ -30,7 +30,7 @@ class Sensor(mqtt_device.MqttDevice):
 
 
 if __name__ == '__main__':
-    config_file = 'sensor_config.toml'
+    config_file = 'config.toml'
     config1 = parse_config(config_file)
 
     sensor1 = Sensor(config1)
