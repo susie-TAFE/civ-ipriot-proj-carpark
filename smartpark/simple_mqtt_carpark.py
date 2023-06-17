@@ -58,6 +58,8 @@ class CarPark(mqtt_device.MqttDevice):
 
     def on_car_entry(self):
         self.total_cars += 1
+        if self.total_cars > self.total_spaces:
+            print("Car park over limit")
         self._publish_event()
 
     def on_car_exit(self):
