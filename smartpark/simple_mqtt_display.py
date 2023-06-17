@@ -1,3 +1,4 @@
+"""An mqtt subscriber that outputs a display"""
 import mqtt_device
 import time
 from datetime import datetime
@@ -32,14 +33,14 @@ class Display(mqtt_device.MqttDevice):
     def on_message(self, client, userdata, msg):
         data = msg.payload.decode()
         values = self.parse_values(data)
-        time = datetime.strptime((values['TIME']), '%H:%M').time()
+        current_time = datetime.strptime((values['TIME']), '%H:%M').time()
         temperature = int(values['TEMPC'])
         free_spaces = int(values['SPACES'])
         available = "FULL" if free_spaces == 0 else free_spaces
         display_values = \
             f"SPACES: {available}", \
             f"TEMPC:  {temperature}", \
-            f"TIME:   {time.strftime('%H:%M')}"
+            f"TIME:   {current_time.strftime('%H:%M')}"
         self.display(*display_values)
 
 

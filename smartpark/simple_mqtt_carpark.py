@@ -1,13 +1,13 @@
+"""An mqtt subscriber/publisher that counts cars entering and exiting a car park"""
 from datetime import datetime
 from config_parser import parse_config
 
 import mqtt_device
-import paho.mqtt.client as paho
 from paho.mqtt.client import MQTTMessage
 
 
 class CarPark(mqtt_device.MqttDevice):
-    """Creates a carpark object to store the state of cars in the lot"""
+    """Creates a car park object to store the state of cars in the lot"""
 
     def __init__(self, config):
         super().__init__(config)
@@ -21,10 +21,10 @@ class CarPark(mqtt_device.MqttDevice):
     @property
     def available_spaces(self):
         if self.total_cars > self.total_spaces:
-            # Carpark is full, no negative spaces
+            # Car park is full, no negative spaces
             available = 0
         elif self.total_cars <= 0:
-            # Carpark is empty, no negative cars
+            # Car park is empty, no negative cars
             available = self.total_spaces
             self.total_cars = 0
         else:
@@ -83,7 +83,5 @@ class CarPark(mqtt_device.MqttDevice):
 if __name__ == '__main__':
     config_file = 'config.toml'
     config = parse_config(config_file)
-    print("Carpark initialized")
+    print("Car park initialized")
     car_park = CarPark(config)
-
-
