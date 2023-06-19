@@ -1,3 +1,9 @@
+"""
+Modified original 'test_parse_config_has_correct_location_and_spaces'
+to get configuration from a toml file instead of a string.
+
+Tested on a copy of the config.toml file in test directory to simplify path issues.
+"""
 import unittest
 
 import smartpark.config_parser as parser
