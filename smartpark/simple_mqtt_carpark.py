@@ -1,6 +1,7 @@
 """An mqtt subscriber/publisher that counts cars entering and exiting a car park"""
 from datetime import datetime
 from config_parser import parse_config
+import tomli_w
 
 import mqtt_device
 from paho.mqtt.client import MQTTMessage
@@ -12,7 +13,7 @@ class CarPark(mqtt_device.MqttDevice):
     def __init__(self, config):
         super().__init__(config)
         self.total_spaces = config['parking_lot']['total_spaces']
-        self.total_cars = 0  # config['total-cars']
+        self.total_cars = 0  # config['parking_lot']['total-cars']
         self.client.on_message = self.on_message
         self.client.subscribe('sensor')
         self.client.loop_forever()
@@ -50,9 +51,6 @@ class CarPark(mqtt_device.MqttDevice):
         )
         print(printout)
 
-        with open("log.txt", "a") as log:
-            log.write(f"{printout}\n")
-
         message = (
             f"TIME: {readable_time}, "
             + f"SPACES: {self.available_spaces}, "
@@ -60,11 +58,19 @@ class CarPark(mqtt_device.MqttDevice):
         )
         self.client.publish('display', message)
 
+    def update_config(self):
+        update = parse_config(config_file)
+        update["parking_lot"]["available_spaces"] = self.available_spaces
+        update["parking_lot"]["current_cars"] = self.total_cars
+        with open(config_file, "wb") as file:
+            tomli_w.dump(update, file)
+
     def on_car_entry(self):
         self.total_cars += 1
         if self.total_cars > self.total_spaces:
             print("Car park over limit")
         self._publish_event()
+        self.update_config()
 
     def on_car_exit(self):
         if self.total_cars == 0:
@@ -74,6 +80,7 @@ class CarPark(mqtt_device.MqttDevice):
         else:
             self.total_cars -= 1
         self._publish_event()
+        self.update_config()
 
     def on_message(self, client, userdata, msg: MQTTMessage):
         payload = msg.payload.decode()
@@ -89,3 +96,6 @@ if __name__ == '__main__':
     config = parse_config(config_file)
     print("Car park initialized")
     car_park = CarPark(config)
+
+# references:
+# Tomli-W; https://pypi.org/project/tomli-w/
