@@ -40,15 +40,19 @@ class CarPark(mqtt_device.MqttDevice):
         self._temperature = value
         
     def _publish_event(self):
+        """Report data to car park, log and display"""
         readable_time = datetime.now().strftime('%H:%M')
-        print(
-            (
-                f"TIME: {readable_time}, "
-                + f"CARS: {self.total_cars}, "
-                + f"SPACES: {self.available_spaces}, "
-                + f"TEMPC: {self.temperature}"
-            )
+        printout = (
+            f"TIME: {readable_time}, "
+            + f"CARS: {self.total_cars}, "
+            + f"SPACES: {self.available_spaces}, "
+            + f"TEMPC: {self.temperature}"
         )
+        print(printout)
+
+        with open("log.txt", "a") as log:
+            log.write(f"{printout}\n")
+
         message = (
             f"TIME: {readable_time}, "
             + f"SPACES: {self.available_spaces}, "
