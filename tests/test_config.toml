@@ -3,3 +3,5 @@ location = "Moondalup City Square Parking"
 total_spaces = 192
 broker_host = "localhost"
 broker_port = 1883
+current_cars = 0
+available_spaces = 192
